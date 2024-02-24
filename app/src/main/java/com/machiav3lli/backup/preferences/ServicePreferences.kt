@@ -269,8 +269,8 @@ val pref_compressionLevel = IntPref(
     summaryId = R.string.prefs_compression_level_summary,
     icon = Phosphor.FileZip,
     iconTint = ColorExodus,
-    entries = (0..9).toList(),
-    defaultValue = 2
+    entries = (0..20).toList(),
+    defaultValue = 3
 )
 
 val pref_enableSessionInstaller = BooleanPref(

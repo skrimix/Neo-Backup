@@ -46,10 +46,11 @@ abstract class BaseAppAction protected constructor(
 
     fun getBackupArchiveFilename(
         what: String,
-        isCompressed: Boolean,
+        compressionType: String?,
         isEncrypted: Boolean
     ): String {
-        return "$what.tar${if (isCompressed) ".gz" else ""}${if (isEncrypted) ".enc" else ""}"
+        val compressionExt = if (compressionType != null) ".$compressionType" else ""
+        return "$what.tar$compressionExt${if (isEncrypted) ".enc" else ""}"
     }
 
     abstract class AppActionFailedException : Exception {

@@ -45,6 +45,7 @@ val vPreference = "1.2.1"
 val vRoom = "2.6.1"
 val vSecurity = "1.1.0-alpha06"
 val vSemVer = "4.2.1"
+val vZstd = "1.5.5-11"
 val vSerialization = "1.6.2"
 val vTimber = "5.0.1"
 val vWork = "2.9.0"
@@ -167,6 +168,7 @@ dependencies {
     implementation("com.github.topjohnwu.libsu:core:$vLibsu")
     implementation("com.github.topjohnwu.libsu:io:$vLibsu")
     implementation("de.voize:semver4k:$vSemVer")
+    implementation("com.github.luben:zstd-jni:$vZstd@aar")
 
     // UI
     implementation("com.google.android.material:material:$vMaterial")

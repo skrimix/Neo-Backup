@@ -3,6 +3,7 @@ package tests
 import androidx.test.platform.app.InstrumentationRegistry
 import com.machiav3lli.backup.OABX
 import com.machiav3lli.backup.actions.BackupAppAction
+import com.machiav3lli.backup.actions.COMPRESSION_ALGORITHM
 import com.machiav3lli.backup.actions.RestoreAppAction
 import com.machiav3lli.backup.handler.ShellHandler
 import com.machiav3lli.backup.handler.ShellHandler.Companion.quote
@@ -305,12 +306,12 @@ class Test_BackupRestore {
             if (toType == "tarapi")
                 restoreAction.genericRestoreFromArchiveTarApi(
                     "data", archive, restoreDir.toString(),
-                    compress, false, null, restoreCache
+                    if(compress) COMPRESSION_ALGORITHM else null, false, null, restoreCache
                 )
             else
                 restoreAction.genericRestoreFromArchiveTarCmd(
                     "data", archive, restoreDir.toString(),
-                    compress, false, null
+                    if(compress) COMPRESSION_ALGORITHM else null, false, null
                 )
         }
         Timber.w("#################### RES ${archive.path}")

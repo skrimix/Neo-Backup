@@ -60,13 +60,12 @@ import com.machiav3lli.backup.utils.suAddFiles
 import com.machiav3lli.backup.utils.suCopyFileToDocument
 import com.topjohnwu.superuser.ShellUtils
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream
-import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream
-import org.apache.commons.compress.compressors.gzip.GzipParameters
+import org.apache.commons.compress.compressors.zstandard.ZstdCompressorOutputStream
 import timber.log.Timber
 import java.io.IOException
 import java.io.OutputStream
 
-const val COMPRESSION_ALGORITHM = "gz"
+const val COMPRESSION_ALGORITHM = "zst"
 
 open class BackupAppAction(context: Context, work: AppActionWork?, shell: ShellHandler) :
     BaseAppAction(context, work, shell) {
@@ -263,7 +262,7 @@ open class BackupAppAction(context: Context, work: AppActionWork?, shell: ShellH
         Timber.i("Creating $dataType backup via API")
         val backupFilename = getBackupArchiveFilename(
             dataType,
-            shouldCompress,
+            if (shouldCompress) COMPRESSION_ALGORITHM else null,
             iv != null && isEncryptionEnabled()
         )
         val backupFile = backupInstanceDir.createFile(backupFilename)
@@ -276,12 +275,10 @@ open class BackupAppAction(context: Context, work: AppActionWork?, shell: ShellH
 
         if (shouldCompress) {
             val compressionLevel = getCompressionLevel()
-            val gzipParams = GzipParameters()
-            gzipParams.compressionLevel = compressionLevel
 
-            outStream = GzipCompressorOutputStream(
+            outStream = ZstdCompressorOutputStream(
                 outStream,
-                gzipParams
+                compressionLevel
             )
         }
 
@@ -414,7 +411,7 @@ open class BackupAppAction(context: Context, work: AppActionWork?, shell: ShellH
         Timber.i("Creating $dataType backup via tar")
         val backupFilename = getBackupArchiveFilename(
             dataType,
-            shouldCompress,
+            if (shouldCompress) COMPRESSION_ALGORITHM else null,
             iv != null && isEncryptionEnabled()
         )
         val backupFile = backupInstanceDir.createFile(backupFilename)
@@ -427,12 +424,10 @@ open class BackupAppAction(context: Context, work: AppActionWork?, shell: ShellH
 
         if (shouldCompress) {
             val compressionLevel = getCompressionLevel()
-            val gzipParams = GzipParameters()
-            gzipParams.compressionLevel = compressionLevel
 
-            outStream = GzipCompressorOutputStream(
+            outStream = ZstdCompressorOutputStream(
                 outStream,
-                gzipParams
+                compressionLevel
             )
         }
 
